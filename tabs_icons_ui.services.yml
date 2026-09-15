@@ -1,0 +1,34 @@
+services:
+  # Services are registered under their own FQCN (not an arbitrary
+  # "tabs_icons_ui.xxx" id): this is what lets Symfony's autowiring resolve
+  # them by type-hint (e.g. in MenuLocalTask::__construct()). The old-style
+  # dotted ids are kept as aliases below, in case something references them
+  # explicitly via "@tabs_icons_ui.xxx".
+  Drupal\tabs_icons_ui\Service\RouteTabDiscovery:
+    autowire: true
+
+  Drupal\tabs_icons_ui\Service\TabIconRenderer:
+    autowire: true
+
+  Drupal\tabs_icons_ui\Hook\Theme:
+    autowire: true
+
+  Drupal\tabs_icons_ui\Hook\MenuLocalTask:
+    autowire: true
+
+  # $cache is bound explicitly because CacheBackendInterface is ambiguous
+  # for plain autowiring: the container has multiple cache bin services
+  # (cache.default, cache.render, cache.data, ...) all implementing that
+  # interface, so autowire alone can't pick the right one. Every other
+  # constructor argument (ModuleExtensionList, ConfigFactoryInterface) is
+  # still resolved automatically.
+  Drupal\tabs_icons_ui\Service\IconLibrary:
+    autowire: true
+    arguments:
+      $cache: '@cache.default'
+
+  tabs_icons_ui.route_tab_discovery:
+    alias: Drupal\tabs_icons_ui\Service\RouteTabDiscovery
+
+  tabs_icons_ui.tab_icon_renderer:
+    alias: Drupal\tabs_icons_ui\Service\TabIconRenderer

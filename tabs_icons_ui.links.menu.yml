@@ -1,0 +1,30 @@
+# tabs_icons_ui.links.menu.yml
+
+# Only the overview page and its three direct children get menu links:
+# these are what the overview page (SystemController::overview) lists.
+tabs_icons_ui.overview:
+  title: 'Tabs Icons UI'
+  description: 'Configure icon replacements for entity local task tabs.'
+  parent: system.admin_config_ui
+  route_name: tabs_icons_ui.overview
+
+tabs_icons_ui.list:
+  title: 'List'
+  description: 'View currently configured route to icon mappings.'
+  parent: tabs_icons_ui.overview
+  route_name: tabs_icons_ui.list
+  weight: 0
+
+tabs_icons_ui.settings_form:
+  title: 'Settings'
+  description: 'Map local task routes to icons.'
+  parent: tabs_icons_ui.overview
+  route_name: tabs_icons_ui.settings_form
+  weight: 10
+
+tabs_icons_ui.icons_form:
+  title: 'Icons'
+  description: 'Manage custom icons available in the icon picker.'
+  parent: tabs_icons_ui.overview
+  route_name: tabs_icons_ui.icons_form
+  weight: 20

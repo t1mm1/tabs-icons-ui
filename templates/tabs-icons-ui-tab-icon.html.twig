@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Icon + optional label for a replaced local task tab.
+ *
+ * Available variables:
+ * - icon: Filtered, safe SVG markup (Drupal\Core\Render\Markup).
+ * - text: Original tab title. Shown visibly, or screen-reader-only when hide_text is TRUE.
+ * - hide_text: Boolean. TRUE hides the visible label but keeps it for assistive tech.
+ */
+#}
+<span class="tabs-icons-ui__icon">{{ icon }}</span>
+{% if hide_text %}
+  <span class="visually-hidden">{{ text }}</span>
+{% else %}
+  <span class="tabs-icons-ui__label">{{ text }}</span>
+{% endif %}

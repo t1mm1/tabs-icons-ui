@@ -1,0 +1,148 @@
+/**
+ * Theme-independent styling for replaced local task tabs.
+ *
+ * The markup comes from templates/tabs-icons-ui-tab-icon.html.twig:
+ *   <span class="tabs-icons-ui__icon">{{ icon }}</span>
+ *   <span class="tabs-icons-ui__label"> or <span class="visually-hidden">
+ *
+ * Without this, the inline <svg> renders at the browser default size
+ * (commonly 300x150px) since the pasted markup usually has no explicit
+ * width/height - that's what makes it look "unstyled" even though the
+ * template swap itself worked.
+ */
+
+/* Icon box: fixes the render size regardless of the pasted SVG's own
+ * width/height/viewBox attributes. */
+.tabs-icons-ui__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.tabs-icons-ui__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Lay the icon and (visible) label out horizontally with a small gap.
+ * Targets any link containing our icon span, so it works inside whatever
+ * markup the active theme wraps around menu-local-task.html.twig. */
+a:has(> .tabs-icons-ui__icon) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+/* Belt-and-braces hide for the "hide text" option: core ships a
+ * .visually-hidden utility class already, but themes occasionally
+ * override or fail to load it on admin/custom regions, so we redeclare
+ * the same accessible-hiding technique here to not depend on that.
+ */
+.tabs-icons-ui__icon + .visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  white-space: nowrap;
+}
+
+/*
+ * Olivero-markup compatibility layer.
+ *
+ * Detaching the theme's nav-tabs JS (done in TabsHooks::preprocessMenuLocalTasks(),
+ * relocated to run after the theme's own preprocess via themeRegistryAlter())
+ * only stops the JS-driven "collapse into a more-actions dropdown"
+ * behavior. On narrow viewports the theme still hides every non-active
+ * .tabs__tab and shows the .tabs__trigger button by PLAIN CSS,
+ * independent of JS - so without this block, the mobile view looks
+ * unchanged even after the JS is stripped.
+ *
+ * This block only activates when a .tabs-icons-ui__icon is actually present
+ * inside the tabs row (via :has()), so it's a no-op - and harmless - on any
+ * theme that doesn't use this markup (no .tabs-wrapper/.tabs__tab to match
+ * against). Selectors and custom property names mirror the theme's own,
+ * ported directly from the theme's working icon-tabs CSS.
+ */
+.tabs-wrapper:has(.tabs-icons-ui__icon) {
+  display: flex;
+}
+
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs {
+  flex-direction: row;
+  align-items: flex-end;
+  width: auto;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+}
+
+/* Force every tab visible on all viewport widths - overrides the theme's
+ * ".tabs__tab:not(.is-active) { display: none; }" mobile default, which is
+ * what was still hiding icons on narrow screens. */
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__tab {
+  display: inline-block !important;
+  border-block: none;
+  background: none;
+  font-size: var(--font-size-base);
+}
+
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__tab.is-active {
+  background: none;
+  box-shadow: none;
+}
+
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__tab.is-active::before {
+  content: none;
+}
+
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link {
+  padding-inline: 1rem;
+  border-radius: var(--tabs-border-radius-size) var(--tabs-border-radius-size) 0 0;
+}
+
+/* Keep padding identical across every interaction state - hover, focus,
+ * and active. Without this, if the base theme adds/removes a border or
+ * outline on these states via box-sizing rather than an outset shadow,
+ * the visible box size shifts and the icon appears to jump on click. */
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link:hover,
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link:focus,
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link:active {
+  padding-inline: 1rem;
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link:hover {
+  color: var(--color-absolutezero-hover);
+  background: var(--tabs--hover-bg-color);
+}
+
+/* The theme positions the active-tab indicator as a left border by default
+ * (built for a vertical/collapsed mobile layout); once we force a
+ * horizontal row above, that indicator needs to move to the bottom edge
+ * to still make sense visually. */
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__link.is-active::before {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--tabs--active-height);
+  border-right: none;
+  border-bottom: var(--tabs--active-height) solid var(--color-absolutezero);
+  border-left: none;
+}
+
+/* The "more actions" trigger button becomes irrelevant once every tab is
+ * forced visible above - hide it so it doesn't sit there as dead UI. */
+.tabs-wrapper:has(.tabs-icons-ui__icon) .tabs__trigger {
+  display: none;
+}

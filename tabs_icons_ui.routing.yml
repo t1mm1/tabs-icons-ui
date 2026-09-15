@@ -1,0 +1,42 @@
+# tabs_icons_ui.routing.yml
+
+# Intermediate overview page (standard Drupal pattern: core's own
+# SystemController::overview() lists whatever menu links declare this
+# route as their parent - here, List, Settings and Icons). No custom
+# controller needed for this.
+tabs_icons_ui.overview:
+  path: '/admin/config/user-interface/tabs-icons-ui'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Tabs Icons UI'
+  requirements:
+    _permission: 'administer tabs icons ui'
+
+# Read-only overview of every currently configured route -> icon mapping,
+# grouped by entity type.
+tabs_icons_ui.list:
+  path: '/admin/config/user-interface/tabs-icons-ui/list'
+  defaults:
+    _controller: '\Drupal\tabs_icons_ui\Controller\MappingListController::build'
+    _title: 'List'
+  requirements:
+    _permission: 'administer tabs icons ui'
+
+# Route -> icon mappings (editing form).
+tabs_icons_ui.settings_form:
+  path: '/admin/config/user-interface/tabs-icons-ui/settings'
+  defaults:
+    _form: '\Drupal\tabs_icons_ui\Form\SettingsForm'
+    _title: 'Settings'
+  requirements:
+    _permission: 'administer tabs icons ui'
+
+# Custom icon definitions (tabs_icons_ui.icons config), additive to the
+# bundled assets/icon-library.json set.
+tabs_icons_ui.icons_form:
+  path: '/admin/config/user-interface/tabs-icons-ui/icons'
+  defaults:
+    _form: '\Drupal\tabs_icons_ui\Form\IconsForm'
+    _title: 'Icons'
+  requirements:
+    _permission: 'administer tabs icons ui'

@@ -1,0 +1,6 @@
+name: 'Tabs Icons UI'
+type: module
+description: 'Replaces entity local task tabs (View/Edit/Delete/Revisions) with configurable icons, theme-independent.'
+package: UI
+configure: tabs_icons_ui.list
+core_version_requirement: ^10.3 || ^11

@@ -1,0 +1,23 @@
+# tabs_icons_ui.links.task.yml
+
+# Primary tabs shown on all three flat sibling pages (List, Settings,
+# Icons). base_route points at tabs_icons_ui.list, the first/canonical
+# page in the group: same mechanism Drupal core uses for e.g. the
+# People / Permissions / Roles tabs.
+tabs_icons_ui.list:
+  title: 'List'
+  route_name: tabs_icons_ui.list
+  base_route: tabs_icons_ui.list
+  weight: 0
+
+tabs_icons_ui.settings_form:
+  title: 'Settings'
+  route_name: tabs_icons_ui.settings_form
+  base_route: tabs_icons_ui.list
+  weight: 10
+
+tabs_icons_ui.icons_form:
+  title: 'Icons'
+  route_name: tabs_icons_ui.icons_form
+  base_route: tabs_icons_ui.list
+  weight: 20

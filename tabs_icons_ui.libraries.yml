@@ -1,0 +1,34 @@
+# Front-end library: renders the icon at a sane size and hides the text
+# label when a mapping has "hide_text" enabled. Attached per-tab from
+# TabIconRenderer::applyIcon() only when a mapping actually applies, and
+# is theme-independent: no theme CSS/JS involved, per requirement #1.
+frontend:
+  css:
+    component:
+      css/tabs-icons-ui.frontend.css: {}
+
+admin:
+  js:
+    js/icon-preview.js: {}
+  css:
+    theme:
+      css/tabs-icons-ui.admin.css: {}
+  dependencies:
+    - core/once
+    - core/drupal
+
+# Icon-picker dialog: lets the user visually choose from the curated
+# library (assets/icon-library.json) instead of only pasting raw SVG.
+# Depends on core/drupal.dialog for Drupal.dialog(), the same dialog
+# wrapper used throughout Drupal's own admin UI, so the picker looks
+# native rather than like a custom one-off widget.
+icon-picker:
+  js:
+    js/icon-picker.js: {}
+  css:
+    theme:
+      css/tabs-icons-ui.icon-picker.css: {}
+  dependencies:
+    - core/once
+    - core/drupal
+    - core/drupal.dialog

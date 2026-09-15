@@ -1,0 +1,44 @@
+tabs_icons_ui.settings:
+  type: config_object
+  label: 'Tabs Icons UI settings'
+  mapping:
+    mappings:
+      type: sequence
+      label: 'Route to icon mappings'
+      sequence:
+        type: mapping
+        label: 'Mapping'
+        mapping:
+          route:
+            type: string
+            label: 'Target route name'
+          icon_svg:
+            type: text
+            label: 'Raw SVG markup'
+          hide_text:
+            type: boolean
+            label: 'Hide tab text, icon only'
+
+# Separate config object (not merged into tabs_icons_ui.settings) so that
+# custom icon definitions export/diff independently of route mappings:
+# the two change for different reasons and at different times.
+tabs_icons_ui.icons:
+  type: config_object
+  label: 'Tabs Icons UI custom icons'
+  mapping:
+    icons:
+      type: sequence
+      label: 'Custom icon definitions'
+      sequence:
+        type: mapping
+        label: 'Icon'
+        mapping:
+          name:
+            type: string
+            label: 'Machine name'
+          label:
+            type: string
+            label: 'Display label'
+          svg:
+            type: text
+            label: 'Raw SVG markup'

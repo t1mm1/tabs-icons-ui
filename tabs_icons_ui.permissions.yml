@@ -1,0 +1,4 @@
+administer tabs icons ui:
+  title: 'Administer tabs icons UI'
+  description: 'Configure which local task tabs are rendered as icons.'
+  restrict access: true

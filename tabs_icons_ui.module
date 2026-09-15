@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Procedural fallbacks for Drupal versions where OOP #[Hook] support for
+ * these specific hooks doesn't exist yet:
+ *   - hook_theme(): OOP support added in 11.1.0
+ *   - hook_preprocess_HOOK(): OOP support added in 11.1.8 (backport),
+ *     stable in 11.2.0
+ *   - hook_theme_registry_alter(): grouped with the same preprocess-era
+ *     work per core issue #3544715 - exact version unconfirmed, so this
+ *     fallback is kept defensively regardless
+ *
+ * On any Drupal version where the OOP equivalent (TabsHooks) DOES fire,
+ * #[LegacyHook] tells the newer hook-discovery system to skip these
+ * procedural versions, so the icon-replacement logic never runs twice
+ * for the same request. On older cores that don't know about
+ * #[LegacyHook] at all, it's simply inert metadata - these functions are
+ * picked up the same way procedural hooks always have been, by name.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Hook\Attribute\LegacyHook;
+use Drupal\tabs_icons_ui\Hook\Theme;
+use Drupal\tabs_icons_ui\Hook\MenuLocalTask;
+
+/**
+ * Implements hook_theme().
+ */
+#[LegacyHook]
+function tabs_icons_ui_theme(): array {
+  return \Drupal::service(Theme::class)->theme();
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-task.html.twig.
+ */
+#[LegacyHook]
+function tabs_icons_ui_preprocess_menu_local_task(array &$variables): void {
+  \Drupal::service(MenuLocalTask::class)->preprocessMenuLocalTask($variables);
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for menu-local-tasks.html.twig.
+ */
+#[LegacyHook]
+function tabs_icons_ui_preprocess_menu_local_tasks(array &$variables): void {
+  \Drupal::service(MenuLocalTask::class)->preprocessMenuLocalTasks($variables);
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+#[LegacyHook]
+function tabs_icons_ui_theme_registry_alter(array &$theme_registry): void {
+  \Drupal::service(Theme::class)->themeRegistryAlter($theme_registry);
+}
