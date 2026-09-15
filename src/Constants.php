@@ -17,9 +17,4 @@ class Constants {
     'svg', 'path', 'circle', 'line', 'polyline', 'polygon', 'rect', 'ellipse', 'g', 'defs', 'use',
   ];
 
-  /**
-   * Key used to keep the icons set of rows in $form_state across ajax rebuilds.
-   */
-  public const string ROWS_STORAGE_KEY_ICONS = 'tabs_icons_ui_custom_icon_rows';
-
 }
